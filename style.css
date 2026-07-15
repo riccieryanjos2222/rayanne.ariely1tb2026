@@ -137,6 +137,88 @@ img {
     margin: 20px auto 0;
 }
 
+/* Campo tático com as posições */
+.campo-tatico {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 5 / 7;
+    margin: 25px auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    background-color: #2d7d2d;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='700' viewBox='0 0 500 700'%3E%3Crect width='500' height='700' fill='%232d7d2d'/%3E%3Crect x='0' y='0' width='500' height='100' fill='%23276e27'/%3E%3Crect x='0' y='200' width='500' height='100' fill='%23276e27'/%3E%3Crect x='0' y='400' width='500' height='100' fill='%23276e27'/%3E%3Crect x='0' y='600' width='500' height='100' fill='%23276e27'/%3E%3Cg stroke='%23ffffff' stroke-width='4' fill='none' opacity='0.9'%3E%3Crect x='10' y='10' width='480' height='680'/%3E%3Cline x1='10' y1='350' x2='490' y2='350'/%3E%3Ccircle cx='250' cy='350' r='70'/%3E%3Ccircle cx='250' cy='350' r='4' fill='%23ffffff'/%3E%3Crect x='100' y='10' width='300' height='130'/%3E%3Crect x='175' y='10' width='150' height='55'/%3E%3Crect x='100' y='560' width='300' height='130'/%3E%3Crect x='175' y='635' width='150' height='55'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--verde-campo);
+}
+
+.posicao {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.posicao .badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--preto-bola);
+    color: #ffffff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    border: 2px solid var(--dourado);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.posicao:hover .badge,
+.posicao:focus .badge {
+    background-color: var(--verde-campo);
+    transform: scale(1.15);
+}
+
+.posicao .tooltip {
+    display: none;
+    position: absolute;
+    top: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 170px;
+    background-color: #ffffff;
+    color: #2b2b2b;
+    text-align: left;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--cinza-linha);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+}
+
+.posicao .tooltip strong {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    color: var(--verde-campo);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.posicao:hover .tooltip,
+.posicao:focus .tooltip {
+    display: block;
+}
+
 /* Rodapé */
 footer {
     margin-top: 20px;
@@ -171,5 +253,17 @@ footer {
     nav a {
         font-size: 0.8rem;
         padding: 6px 10px;
+    }
+
+    .posicao .badge {
+        width: 34px;
+        height: 34px;
+        font-size: 0.6rem;
+    }
+
+    .posicao .tooltip {
+        width: 130px;
+        font-size: 0.7rem;
+        padding: 8px 10px;
     }
 }
