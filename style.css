@@ -13,12 +13,18 @@
 }
 
 body {
-    background-color: #f9f9f7;
+    background-color: #2d7d2d;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='600' viewBox='0 0 1000 600'%3E%3Crect width='1000' height='600' fill='%232d7d2d'/%3E%3Crect x='0' y='0' width='100' height='600' fill='%23276e27'/%3E%3Crect x='200' y='0' width='100' height='600' fill='%23276e27'/%3E%3Crect x='400' y='0' width='100' height='600' fill='%23276e27'/%3E%3Crect x='600' y='0' width='100' height='600' fill='%23276e27'/%3E%3Crect x='800' y='0' width='100' height='600' fill='%23276e27'/%3E%3Cg stroke='%23ffffff' stroke-width='4' fill='none' opacity='0.85'%3E%3Crect x='10' y='10' width='980' height='580'/%3E%3Cline x1='500' y1='10' x2='500' y2='590'/%3E%3Ccircle cx='500' cy='300' r='80'/%3E%3Ccircle cx='500' cy='300' r='4' fill='%23ffffff'/%3E%3Crect x='10' y='170' width='150' height='260'/%3E%3Crect x='10' y='230' width='60' height='140'/%3E%3Crect x='840' y='170' width='150' height='260'/%3E%3Crect x='930' y='230' width='60' height='140'/%3E%3Cpath d='M 160 240 A 80 80 0 0 1 160 360'/%3E%3Cpath d='M 840 240 A 80 80 0 0 0 840 360'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: #2b2b2b;
     font-family: 'Open Sans', Arial, sans-serif;
     margin: 0;
     padding: 20px;
     line-height: 1.6;
+    min-height: 100vh;
 }
 
 h1, h2, h3 {
@@ -56,7 +62,8 @@ nav {
 }
 
 nav a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     color: #ffffff;
     background-color: var(--preto-bola);
     text-decoration: none;
@@ -65,12 +72,20 @@ nav a {
     padding: 8px 14px;
     margin: 4px;
     border-radius: 6px;
+    border: 1px solid var(--dourado);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 nav a:hover {
     background-color: var(--verde-campo);
     transform: translateY(-2px);
+}
+
+.nav-icon {
+    font-size: 1.1rem;
+    margin-right: 6px;
+    line-height: 1;
 }
 
 /* Conteúdo principal */
