@@ -6,6 +6,7 @@
     --dourado: #d4af37;
     --preto-bola: #1a1a1a;
     --cinza-linha: #e0e0e0;
+    --vermelho-cartao: #b0242c;
 }
 
 * {
@@ -31,6 +32,13 @@ h1, h2, h3 {
     font-family: 'Oswald', Arial, sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+/* Foco de teclado consistente em todo o site (antes só existia :hover) */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--dourado);
+    outline-offset: 2px;
 }
 
 /* Header estilo "gramado" */
@@ -77,7 +85,8 @@ nav a {
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-nav a:hover {
+nav a:hover,
+nav a:focus-visible {
     background-color: var(--verde-campo);
     transform: translateY(-2px);
 }
@@ -230,10 +239,256 @@ footer {
     font-size: 0.85rem;
 }
 
+/* =====================================================================
+   Diagrama do impedimento + Disputa de pênaltis (quiz)
+   Reaproveita as variáveis do site: o gramado usa os mesmos verdes do
+   .campo-tatico acima, e os cartões (diagrama/quiz) usam o mesmo padrão
+   "preto + borda dourada" que o nav já usa. Nada de paleta nova.
+   ===================================================================== */
+
+.fut-secao {
+    margin: 2rem 0;
+}
+
+.fut-secao h3 {
+    margin-top: 0;
+}
+
+.fut-lead {
+    max-width: 62ch;
+    margin: 0 0 1.1rem;
+    color: #555555;
+    font-size: 0.95rem;
+}
+
+/* ---------- Diagrama do impedimento ---------- */
+
+.fut-diagrama {
+    background-color: var(--verde-claro);
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--verde-claro),
+        var(--verde-claro) 76px,
+        var(--verde-campo) 76px,
+        var(--verde-campo) 152px
+    );
+    border-radius: 12px;
+    padding: 1rem 1rem 1.25rem;
+    border: 1px solid var(--verde-campo);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.fut-diagrama svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.fut-campo-fundo { fill: transparent; }
+.fut-listra { display: none; }
+.fut-linha { stroke: #ffffff; stroke-width: 2; fill: none; opacity: 0.9; }
+.fut-linha-tracejada {
+    stroke: var(--dourado);
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+    fill: none;
+    opacity: 0.9;
+    transition: transform 0.25s ease;
+}
+.fut-trajeto {
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    stroke-dasharray: 3 5;
+    fill: none;
+    opacity: 0.6;
+}
+
+.fut-jogador circle { stroke: #ffffff; stroke-width: 2; }
+.fut-jogador text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    fill: #ffffff;
+    text-anchor: middle;
+}
+.fut-defensor circle { fill: #1c355c; }
+.fut-goleiro circle { fill: var(--preto-bola); }
+.fut-passador circle { fill: #3d3d3d; }
+.fut-atacante circle {
+    fill: var(--vermelho-cartao);
+    transition: cx 0.35s ease;
+}
+.fut-atacante.fut-legal circle { fill: var(--verde-campo); }
+
+.fut-bandeira {
+    transform-origin: 620px 40px;
+    transition: transform 0.3s ease;
+}
+.fut-bandeira.fut-ativa { transform: rotate(-18deg); }
+.fut-bandeira path { fill: var(--vermelho-cartao); }
+.fut-bandeira.fut-legal path { fill: #ffffff; }
+
+.fut-controles {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.9rem;
+}
+
+.fut-btn {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    background-color: var(--preto-bola);
+    color: #ffffff;
+    border: 1px solid var(--dourado);
+    padding: 0.5rem 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.fut-btn:hover {
+    background-color: var(--verde-campo);
+    transform: translateY(-2px);
+}
+.fut-btn.fut-btn-secundario {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+.fut-btn.fut-btn-secundario:hover { background-color: rgba(255, 255, 255, 0.15); }
+
+.fut-status {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    color: #ffffff;
+    background-color: var(--vermelho-cartao);
+    transition: background-color 0.25s ease;
+}
+.fut-status.fut-legal { background-color: var(--verde-campo); }
+
+/* ---------- Disputa de pênaltis (quiz) ---------- */
+
+.fut-quiz {
+    background-color: var(--preto-bola);
+    color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid var(--dourado);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.fut-placar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.fut-placar-numero {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+    color: var(--dourado);
+}
+
+.fut-cobrancas {
+    display: flex;
+    gap: 0.35rem;
+}
+.fut-cobranca-marca {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+}
+.fut-cobranca-marca.fut-gol { background-color: var(--verde-campo); border-color: var(--verde-campo); }
+.fut-cobranca-marca.fut-perdeu { background-color: var(--vermelho-cartao); border-color: var(--vermelho-cartao); }
+
+.fut-pergunta-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+    margin-bottom: 0.3rem;
+}
+
+.fut-cenario {
+    font-size: 0.98rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    max-width: 60ch;
+}
+
+.fut-opcoes {
+    display: grid;
+    gap: 0.55rem;
+    margin-bottom: 0.9rem;
+}
+
+.fut-opcao {
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: 'Open Sans', Arial, sans-serif;
+    cursor: pointer;
+    line-height: 1.4;
+}
+.fut-opcao:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.14); }
+.fut-opcao:disabled { cursor: default; }
+.fut-opcao.fut-correta { border-color: var(--verde-campo); background-color: rgba(26, 93, 26, 0.35); }
+.fut-opcao.fut-errada { border-color: var(--vermelho-cartao); background-color: rgba(176, 36, 44, 0.3); }
+
+.fut-explicacao {
+    font-size: 0.86rem;
+    opacity: 0.85;
+    border-left: 3px solid var(--dourado);
+    padding-left: 0.7rem;
+    margin-bottom: 1rem;
+    max-width: 60ch;
+}
+
+.fut-resultado {
+    font-family: 'Oswald', sans-serif;
+}
+.fut-resultado .fut-placar-numero { font-size: 2rem; }
+.fut-resultado p {
+    max-width: 55ch;
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #f0f0f0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fut-atacante circle, .fut-bandeira, .fut-linha-tracejada { transition: none; }
+}
+
 /* Responsividade */
 @media (max-width: 600px) {
     body {
         padding: 10px;
+        background-attachment: scroll; /* fixed trava/pisca em Safari mobile */
     }
 
     header {
@@ -265,5 +520,9 @@ footer {
         width: 130px;
         font-size: 0.7rem;
         padding: 8px 10px;
+    }
+
+    .fut-quiz, .fut-diagrama {
+        padding: 1rem;
     }
 }
