@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Blog sobre a evolução do futebol: tática, tecnologia, futebol feminino e regras do jogo.">
   <title>Meu Blog de Tecnologia</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header id="topo">
         <h1>A Evolução do Futebol pela História</h1>
+        <p class="epigrafe">"O apito toca, a bola rola, e cada jogo reescreve um pouco a história do esporte mais popular do planeta."<span class="autor">Bola em Jogo</span></p>
     </header>
 
     <nav>
@@ -20,8 +22,12 @@
         <a href="#formacao"><span class="nav-icon" aria-hidden="true">⚽</span>Posições</a>
         <a href="#tatica"><span class="nav-icon" aria-hidden="true">♟️</span>Tática</a>
         <a href="#tecnologia"><span class="nav-icon" aria-hidden="true">📡</span>Tecnologia</a>
-        <a href="#feminino"><span class="nav-icon" aria-hidden="true">👩</span>Futebol Feminino</a>
-        <a href="#regras"><span class="nav-icon" aria-hidden="true">📖</span>Guia de Regras</a>
+        <a href="#copas"><span class="nav-icon" aria-hidden="true">🏆</span>Copas</a>
+        <a href="#feminino"><span class="nav-icon" aria-hidden="true">👩</span>Feminino</a>
+        <a href="#craques"><span class="nav-icon" aria-hidden="true">🌟</span>Craques</a>
+        <a href="#curiosidades"><span class="nav-icon" aria-hidden="true">🔎</span>Curiosidades</a>
+        <a href="#selecao"><span class="nav-icon" aria-hidden="true">🇧🇷</span>Seleção</a>
+        <a href="#regras"><span class="nav-icon" aria-hidden="true">📖</span>Regras</a>
     </nav>
 
     <main>
@@ -88,25 +94,88 @@
         </section>
 
         <section id="tatica">
-            <h2>1. A Evolução Tática: Do "Chuta pra Frente" aos Esquemas Modernos</h2>
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">1</span>
+                <h2>A Evolução Tática: Do "Chuta pra Frente" aos Esquemas Modernos</h2>
+            </div>
             <p>O futebol nem sempre foi um jogo de xadrez estratégico. Nos primórdios do esporte, no século XIX, a tática era quase inexistente: o objetivo era apenas correr em direção à bola e chutá-la para frente. Com o tempo, a necessidade de organização deu origem a sistemas históricos, como o "WM" na década de 1930 e o revolucionário "Carrossel Holandês" nos anos 1970, onde os jogadores não tinham posição fixa.</p>
             <p>Hoje, o futebol moderno é dominado por esquemas dinâmicos como o 4-3-3 e o 3-4-3, onde a compactação defensiva, a alta intensidade na marcação (pressionar o adversário assim que se perde a bola) e a versatilidade dos atletas são fundamentais. Mais do que posições rígidas, o foco atual está na ocupação inteligente dos espaços do campo.</p>
         </section>
 
         <section id="tecnologia">
-            <h2>2. Bastidores da Tecnologia: O Impacto do VAR e dos Chips na Bola</h2>
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">2</span>
+                <h2>Bastidores da Tecnologia: O Impacto do VAR e dos Chips na Bola</h2>
+            </div>
             <p>A tecnologia transformou o futebol em um esporte de alta precisão. O principal exemplo é o VAR (Video Assistant Referee), sistema de arbitragem de vídeo implementado para corrigir erros claros e manifestos em quatro situações específicas: gols, pênaltis, cartões vermelhos diretos e confusão de identidade.</p>
             <p>Além das câmeras de alta definição, a ciência entrou em campo por meio de sensores de impedimento semiautomático e chips inseridos no centro das bolas oficiais. Esses sensores enviam dados em tempo real (centenas de vezes por segundo) para uma central de inteligência, mapeando a posição exata dos atletas e o momento exato do chute. Essa inovação reduz o tempo de tomada de decisão e traz mais justiça aos resultados.</p>
         </section>
 
+        <section id="copas">
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">3</span>
+                <h2>Grandes Copas do Mundo: Marcos de Cada Época</h2>
+            </div>
+            <p>A Copa do Mundo é o maior palco do futebol e, a cada edição, costuma deixar uma marca duradoura no esporte — seja tática, tecnológica ou simbólica. Clique em uma edição na linha do tempo abaixo para relembrar o que a tornou especial.</p>
+
+            <div class="fut-secao">
+                <h3>Linha do tempo interativa</h3>
+                <p class="fut-lead">Escolha um ano para ver o destaque daquela Copa.</p>
+                <div class="fut-timeline" id="fut-timeline" role="group" aria-label="Edições da Copa do Mundo"></div>
+                <div class="fut-timeline-painel" id="fut-timeline-painel"></div>
+            </div>
+        </section>
+
         <section id="feminino">
-            <h2>4. Futebol Feminino: A Ascensão e os Próximos Passos</h2>
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">4</span>
+                <h2>Futebol Feminino: A Ascensão e os Próximos Passos</h2>
+            </div>
             <p>O futebol feminino vive o período de maior crescimento e visibilidade de sua história. Após décadas de proibição por lei em diversos países (inclusive no Brasil, entre 1941 e 1979), a modalidade quebrou barreiras e passou a lotar estádios lendários, bater recordes de audiência em Copas do Mundo e atrair grandes patrocinadores globais.</p>
             <p>Apesar dos avanços significativos, a modalidade ainda enfrenta o desafio de consolidar ligas nacionais estruturadas e sustentáveis ao redor do mundo. Os próximos passos envolvem o investimento contínuo nas categorias de base, a melhoria das condições de treino e a busca por maior igualdade de investimentos em comparação ao futebol masculino.</p>
         </section>
 
+        <section id="craques">
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">5</span>
+                <h2>Craques que Mudaram o Jogo</h2>
+            </div>
+            <p>Certos jogadores não apenas venceram títulos: eles mudaram a forma como o futebol é jogado e pensado. Alguns exemplos marcantes:</p>
+            <ul>
+                <li><strong>Pelé</strong> — três Copas do Mundo conquistadas e um repertório de dribles e finalizações que ajudaram a popularizar o futebol brasileiro no mundo inteiro.</li>
+                <li><strong>Johan Cruyff</strong> — símbolo do "Futebol Total" holandês, inspirou a geração de treinadores que hoje valoriza a posse de bola e a troca de posições em campo.</li>
+                <li><strong>Diego Maradona</strong> — capacidade de decidir jogos sozinho, tornando-se referência de criatividade e liderança dentro de campo.</li>
+                <li><strong>Marta</strong> — maior artilheira da história das Copas do Mundo (masculinas e femininas somadas) e uma das principais responsáveis por elevar a visibilidade do futebol feminino.</li>
+            </ul>
+        </section>
+
+        <section id="curiosidades">
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">6</span>
+                <h2>Curiosidades e Recordes do Futebol</h2>
+            </div>
+            <ul>
+                <li>O jogo de futebol moderno tem suas regras formalizadas na Inglaterra em 1863, com a criação da Football Association.</li>
+                <li>Uma partida oficial de futebol tem 90 minutos, divididos em dois tempos de 45 minutos, além do acréscimo definido pelo árbitro.</li>
+                <li>O campo de futebol não tem uma medida única e fixa: as regras permitem variações de tamanho dentro de limites estabelecidos para partidas internacionais.</li>
+                <li>A Copa do Mundo é disputada desde 1930 e acontece, em regra, a cada quatro anos.</li>
+            </ul>
+        </section>
+
+        <section id="selecao">
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">7</span>
+                <h2>Futebol Brasileiro: Paixão e Tradição</h2>
+            </div>
+            <p>O Brasil é o único país a disputar todas as edições da Copa do Mundo e um dos maiores vencedores da competição, o que ajudou a consolidar o futebol como parte central da identidade cultural do país. Além da seleção, os clubes brasileiros mantêm rivalidades históricas e torcidas extremamente presentes, com estádios que funcionam quase como pontos de encontro comunitário nos dias de jogo.</p>
+            <p>O país também é um dos maiores exportadores de jogadores do mundo, formando talentos nas categorias de base de clubes que depois se destacam em ligas europeias e em outras competições internacionais.</p>
+        </section>
+
         <section id="regras">
-            <h2>8. Guia Interativo: As Regras que Todo Mundo Confunde</h2>
+            <div class="fut-secao-titulo">
+                <span class="fut-numero" aria-hidden="true">8</span>
+                <h2>Guia Interativo: As Regras que Todo Mundo Confunde</h2>
+            </div>
             <p>Mesmo quem acompanha futebol há anos pode se perder em algumas regras do jogo. Abaixo estão explicados de forma simples dois dos conceitos mais debatidos nas arquibancadas:</p>
 
             <h3>O Impedimento</h3>
@@ -210,7 +279,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Meu Blog de Tecnologia e Futebol. Todos os direitos reservados.</p>
+        <p>&copy; 2026 Bola em Jogo — Blog de Futebol. Todos os direitos reservados.</p>
     </footer>
 
     <script>
@@ -276,6 +345,40 @@
       });
 
       posicionar();
+
+      /* ===== Linha do tempo das Copas do Mundo ===== */
+      var copas = [
+        { ano: 1930, titulo: "A Primeira Copa", texto: "Disputada no Uruguai, marcou o início da competição que se tornaria o maior evento do futebol mundial." },
+        { ano: 1950, titulo: "O Maracanã Lotado", texto: "Realizada no Brasil, ficou marcada por um dos maiores públicos já registrados em uma partida de futebol." },
+        { ano: 1970, titulo: "O Auge do Futebol-Arte", texto: "A seleção brasileira, com Pelé em campo, é lembrada como uma das equipes mais admiradas da história da competição." },
+        { ano: 1994, titulo: "Os Estados Unidos em Campo", texto: "Levou a Copa do Mundo pela primeira vez a um país onde o futebol ainda buscava espaço, ajudando a expandir o esporte no continente." },
+        { ano: 2014, titulo: "A Era das Câmeras de Gol", texto: "Introduziu oficialmente a tecnologia de linha do gol, reduzindo erros de arbitragem em lances de bola cruzando a linha." },
+        { ano: 2022, titulo: "O Impedimento Semiautomático", texto: "Estreou o sistema de sensores para marcações de impedimento, acelerando decisões que antes dependiam só do olho humano." }
+      ];
+
+      var timeline = document.getElementById('fut-timeline');
+      var painel = document.getElementById('fut-timeline-painel');
+
+      function mostrarCopa(indice) {
+        var botoes = timeline.querySelectorAll('.fut-ano');
+        botoes.forEach(function (b, i) {
+          b.setAttribute('aria-pressed', i === indice ? 'true' : 'false');
+        });
+        var c = copas[indice];
+        painel.innerHTML = '<h4>' + c.ano + ' — ' + c.titulo + '</h4><p>' + c.texto + '</p>';
+      }
+
+      copas.forEach(function (c, i) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'fut-ano';
+        btn.textContent = c.ano;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.addEventListener('click', function () { mostrarCopa(i); });
+        timeline.appendChild(btn);
+      });
+
+      mostrarCopa(0);
 
       /* ===== Disputa de pênaltis (quiz) ===== */
       var perguntas = [
