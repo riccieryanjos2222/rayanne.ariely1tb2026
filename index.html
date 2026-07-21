@@ -6,6 +6,242 @@
   <meta name="description" content="Blog sobre a evolução do futebol: tática, tecnologia, futebol feminino e regras do jogo.">
   <title>Meu Blog de Tecnologia</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Componentes novos: diagrama de impedimento + disputa de pênaltis =====
+       Namespace "fut-" para não colidir com o style.css existente do blog. */
+
+    .fut-secao {
+      --pitch-dark: #0c3d2c;
+      --pitch-mid: #14512f;
+      --pitch-line: rgba(244, 242, 234, 0.55);
+      --chalk: #f4f2ea;
+      --ink: #0f1f18;
+      --gol: #2f9e5c;
+      --defesa: #b0242c;
+      --aviso: #e0b03a;
+      margin: 3rem 0;
+      font-family: inherit;
+    }
+
+    .fut-secao h3 {
+      font-family: 'Oswald', 'Arial Narrow', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 1.15rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .fut-lead {
+      max-width: 62ch;
+      margin: 0 0 1.1rem;
+      color: inherit;
+      opacity: 0.85;
+      font-size: 0.96rem;
+    }
+
+    /* ---------- Diagrama do impedimento ---------- */
+
+    .fut-diagrama {
+      background: var(--pitch-dark);
+      border-radius: 4px;
+      padding: 1rem 1rem 1.25rem;
+    }
+
+    .fut-diagrama svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .fut-campo-fundo { fill: var(--pitch-dark); }
+    .fut-listra { fill: var(--pitch-mid); opacity: 0.55; }
+    .fut-linha { stroke: var(--pitch-line); stroke-width: 2; fill: none; }
+    .fut-linha-tracejada {
+      stroke: var(--chalk);
+      stroke-width: 2;
+      stroke-dasharray: 6 6;
+      fill: none;
+      opacity: 0.8;
+      transition: transform 0.25s ease;
+    }
+    .fut-trajeto {
+      stroke: var(--chalk);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 5;
+      fill: none;
+      opacity: 0.55;
+    }
+
+    .fut-jogador circle { stroke: var(--chalk); stroke-width: 2; }
+    .fut-jogador text {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      fill: var(--chalk);
+      text-anchor: middle;
+    }
+    .fut-defensor circle { fill: #1c355c; }
+    .fut-goleiro circle { fill: #6a2b8f; }
+    .fut-passador circle { fill: #3d3d3d; }
+    .fut-atacante circle {
+      fill: var(--defesa);
+      transition: cx 0.35s ease;
+    }
+    .fut-atacante.fut-legal circle { fill: var(--gol); }
+
+    .fut-bandeira {
+      transform-origin: 620px 40px;
+      transition: transform 0.3s ease;
+    }
+    .fut-bandeira.fut-ativa { transform: rotate(-18deg); }
+    .fut-bandeira path { fill: var(--defesa); }
+    .fut-bandeira.fut-legal path { fill: var(--pitch-line); }
+
+    .fut-controles {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+
+    .fut-btn {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: var(--chalk);
+      color: var(--ink);
+      border: none;
+      padding: 0.5rem 0.85rem;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .fut-btn:hover { background: #dfdccd; }
+    .fut-btn:focus-visible { outline: 3px solid var(--aviso); outline-offset: 2px; }
+    .fut-btn.fut-btn-secundario {
+      background: transparent;
+      color: var(--chalk);
+      border: 1px solid var(--pitch-line);
+    }
+    .fut-btn.fut-btn-secundario:hover { background: rgba(244,242,234,0.1); }
+
+    .fut-status {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      padding: 0.4rem 0.7rem;
+      border-radius: 2px;
+      color: var(--chalk);
+      background: var(--defesa);
+      transition: background 0.25s ease;
+    }
+    .fut-status.fut-legal { background: var(--gol); }
+
+    /* ---------- Disputa de pênaltis (quiz) ---------- */
+
+    .fut-quiz {
+      background: var(--pitch-dark);
+      color: var(--chalk);
+      border-radius: 4px;
+      padding: 1.25rem 1.25rem 1.5rem;
+    }
+
+    .fut-placar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--pitch-line);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .fut-placar-numero {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+    }
+
+    .fut-cobrancas {
+      display: flex;
+      gap: 0.35rem;
+    }
+    .fut-cobranca-marca {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid var(--pitch-line);
+      background: transparent;
+    }
+    .fut-cobranca-marca.fut-gol { background: var(--gol); border-color: var(--gol); }
+    .fut-cobranca-marca.fut-perdeu { background: var(--defesa); border-color: var(--defesa); }
+
+    .fut-pergunta-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+      margin-bottom: 0.3rem;
+    }
+
+    .fut-cenario {
+      font-size: 0.98rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      max-width: 60ch;
+    }
+
+    .fut-opcoes {
+      display: grid;
+      gap: 0.55rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .fut-opcao {
+      text-align: left;
+      background: rgba(244, 242, 234, 0.06);
+      border: 1px solid var(--pitch-line);
+      color: var(--chalk);
+      padding: 0.6rem 0.8rem;
+      border-radius: 2px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .fut-opcao:hover:not(:disabled) { background: rgba(244, 242, 234, 0.14); }
+    .fut-opcao:focus-visible { outline: 3px solid var(--aviso); outline-offset: 2px; }
+    .fut-opcao:disabled { cursor: default; }
+    .fut-opcao.fut-correta { border-color: var(--gol); background: rgba(47, 158, 92, 0.22); }
+    .fut-opcao.fut-errada { border-color: var(--defesa); background: rgba(176, 36, 44, 0.22); }
+
+    .fut-explicacao {
+      font-size: 0.86rem;
+      opacity: 0.85;
+      border-left: 3px solid var(--pitch-line);
+      padding-left: 0.7rem;
+      margin-bottom: 1rem;
+      max-width: 60ch;
+    }
+
+    .fut-resultado {
+      font-family: 'Oswald', sans-serif;
+    }
+    .fut-resultado .fut-placar-numero { font-size: 2rem; }
+    .fut-resultado p { max-width: 55ch; font-family: inherit; font-weight: 400; font-size: 0.95rem; line-height: 1.5; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fut-atacante circle, .fut-bandeira, .fut-linha-tracejada { transition: none; }
+    }
+  </style>
 </head>
 <body>
     <header id="topo">
@@ -113,12 +349,333 @@
             <h3>Toque de Mão/Braço</h3>
             <p>Nem todo toque de mão na bola é falta. A infração é marcada quando o toque é voluntário ou quando o braço do jogador está em uma posição não natural, ampliando o espaço do seu corpo. Porém, se a bola desviar acidentalmente no braço de um defensor após rebater em seu próprio corpo, o jogo geralmente segue.</p>
 
-            <img src="Gemini_Generated_Image_.png" alt="A função da formação 4-3-3 durante uma partida de futebol">
+            <!-- Diagrama interativo do impedimento -->
+            <div class="fut-secao">
+                <h3>Veja o impedimento na prática</h3>
+                <p class="fut-lead">Use os controles para mover o atacante em direção ao gol e observe quando ele ultrapassa a linha do último defensor no momento do passe.</p>
+
+                <div class="fut-diagrama">
+                    <svg id="fut-svg-impedimento" viewBox="0 0 760 300" role="img" aria-labelledby="fut-svg-titulo fut-svg-desc">
+                        <title id="fut-svg-titulo">Diagrama do campo de ataque</title>
+                        <desc id="fut-svg-desc">Vista de cima do campo de ataque mostrando o passador, o atacante, o último defensor e o goleiro.</desc>
+
+                        <rect class="fut-campo-fundo" x="0" y="0" width="760" height="300"></rect>
+                        <rect class="fut-listra" x="0" y="0" width="95" height="300"></rect>
+                        <rect class="fut-listra" x="190" y="0" width="95" height="300"></rect>
+                        <rect class="fut-listra" x="380" y="0" width="95" height="300"></rect>
+                        <rect class="fut-listra" x="570" y="0" width="95" height="300"></rect>
+
+                        <!-- grande área -->
+                        <rect class="fut-linha" x="620" y="55" width="110" height="190"></rect>
+                        <!-- pequena área -->
+                        <rect class="fut-linha" x="678" y="105" width="52" height="90"></rect>
+                        <!-- gol -->
+                        <rect class="fut-linha" x="742" y="120" width="14" height="60"></rect>
+
+                        <!-- linha do impedimento (acompanha o defensor) -->
+                        <line id="fut-linha-impedimento" class="fut-linha-tracejada" x1="560" y1="10" x2="560" y2="290"></line>
+
+                        <!-- trajeto do passe -->
+                        <line id="fut-trajeto-passe" class="fut-trajeto" x1="260" y1="230" x2="500" y2="120"></line>
+
+                        <!-- goleiro -->
+                        <g class="fut-jogador fut-goleiro" transform="translate(720,150)">
+                            <circle r="13"></circle>
+                            <text y="-18">GOL</text>
+                        </g>
+
+                        <!-- último defensor -->
+                        <g id="fut-defensor" class="fut-jogador fut-defensor" transform="translate(560,150)">
+                            <circle r="13"></circle>
+                            <text y="-18">ÚLT. DEF.</text>
+                        </g>
+
+                        <!-- passador -->
+                        <g class="fut-jogador fut-passador" transform="translate(260,230)">
+                            <circle r="13"></circle>
+                            <text y="24">PASSE</text>
+                        </g>
+
+                        <!-- atacante (posição móvel) -->
+                        <g id="fut-atacante" class="fut-jogador fut-atacante" transform="translate(500,120)">
+                            <circle r="13"></circle>
+                            <text y="-18">ATACANTE</text>
+                        </g>
+
+                        <!-- bandeira do auxiliar -->
+                        <g id="fut-bandeira" class="fut-bandeira" transform="translate(620,40)">
+                            <path d="M0,0 L0,-34 L20,-27 L0,-20 Z"></path>
+                            <line x1="0" y1="0" x2="0" y2="4" stroke="#f4f2ea" stroke-width="2"></line>
+                        </g>
+                    </svg>
+
+                    <div class="fut-controles">
+                        <button type="button" class="fut-btn" id="fut-btn-recuar">◂ Recuar atacante</button>
+                        <button type="button" class="fut-btn" id="fut-btn-avancar">Avançar atacante ▸</button>
+                        <button type="button" class="fut-btn fut-btn-secundario" id="fut-btn-nova-jogada">Nova jogada</button>
+                        <span id="fut-status" class="fut-status" role="status" aria-live="polite">POSIÇÃO LEGAL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disputa de pênaltis: quiz -->
+            <div class="fut-secao">
+                <h3>Disputa de pênaltis: teste suas regras</h3>
+                <p class="fut-lead">Cinco cobranças, cinco situações de jogo. Acerte a marcação correta para converter o pênalti.</p>
+
+                <div class="fut-quiz" id="fut-quiz">
+                    <div class="fut-placar">
+                        <div>
+                            <div class="fut-placar-numero"><span id="fut-placar-acertos">0</span> x <span id="fut-placar-erros">0</span></div>
+                        </div>
+                        <div class="fut-cobrancas" id="fut-cobrancas" aria-hidden="true">
+                            <span class="fut-cobranca-marca"></span>
+                            <span class="fut-cobranca-marca"></span>
+                            <span class="fut-cobranca-marca"></span>
+                            <span class="fut-cobranca-marca"></span>
+                            <span class="fut-cobranca-marca"></span>
+                        </div>
+                    </div>
+
+                    <div id="fut-quiz-corpo"></div>
+                </div>
+            </div>
         </section>
     </main>
 
     <footer>
         <p>&copy; 2026 Meu Blog de Tecnologia e Futebol. Todos os direitos reservados.</p>
     </footer>
+
+    <script>
+    (function () {
+      /* ===== Diagrama do impedimento ===== */
+      var svg = document.getElementById('fut-svg-impedimento');
+      var atacante = document.getElementById('fut-atacante');
+      var defensor = document.getElementById('fut-defensor');
+      var linhaImpedimento = document.getElementById('fut-linha-impedimento');
+      var trajetoPasse = document.getElementById('fut-trajeto-passe');
+      var bandeira = document.getElementById('fut-bandeira');
+      var status = document.getElementById('fut-status');
+
+      var LIMITE_ESQUERDO = 230;
+      var LIMITE_DIREITO = 700;
+      var PASSO = 24;
+
+      var estado = { atacanteX: 500, atacanteY: 120, defensorX: 560, passadorX: 260, passadorY: 230 };
+
+      function getX(el) {
+        var t = el.getAttribute('transform');
+        var m = /translate\(([-\d.]+)/.exec(t);
+        return parseFloat(m[1]);
+      }
+
+      function posicionar() {
+        atacante.setAttribute('transform', 'translate(' + estado.atacanteX + ',' + estado.atacanteY + ')');
+        defensor.setAttribute('transform', 'translate(' + estado.defensorX + ',150)');
+        linhaImpedimento.setAttribute('x1', estado.defensorX);
+        linhaImpedimento.setAttribute('x2', estado.defensorX);
+        trajetoPasse.setAttribute('x1', estado.passadorX);
+        trajetoPasse.setAttribute('y1', estado.passadorY);
+        trajetoPasse.setAttribute('x2', estado.atacanteX);
+        trajetoPasse.setAttribute('y2', estado.atacanteY);
+        bandeira.setAttribute('transform', 'translate(' + estado.defensorX + ',40)');
+        avaliar();
+      }
+
+      function avaliar() {
+        var impedido = estado.atacanteX > estado.defensorX;
+        atacante.classList.toggle('fut-legal', !impedido);
+        bandeira.classList.toggle('fut-ativa', impedido);
+        bandeira.classList.toggle('fut-legal', !impedido);
+        status.classList.toggle('fut-legal', !impedido);
+        status.textContent = impedido ? 'IMPEDIDO' : 'POSIÇÃO LEGAL';
+      }
+
+      document.getElementById('fut-btn-avancar').addEventListener('click', function () {
+        estado.atacanteX = Math.min(LIMITE_DIREITO, estado.atacanteX + PASSO);
+        posicionar();
+      });
+
+      document.getElementById('fut-btn-recuar').addEventListener('click', function () {
+        estado.atacanteX = Math.max(LIMITE_ESQUERDO, estado.atacanteX - PASSO);
+        posicionar();
+      });
+
+      document.getElementById('fut-btn-nova-jogada').addEventListener('click', function () {
+        estado.defensorX = 480 + Math.round(Math.random() * 140);
+        estado.atacanteX = Math.max(LIMITE_ESQUERDO, estado.defensorX - 120 - Math.round(Math.random() * 80));
+        estado.passadorX = Math.max(LIMITE_ESQUERDO - 60, estado.atacanteX - 180);
+        posicionar();
+      });
+
+      posicionar();
+
+      /* ===== Disputa de pênaltis (quiz) ===== */
+      var perguntas = [
+        {
+          cenario: "No momento em que a bola é lançada, o atacante está em posição de impedimento, mas não toca na bola nem disputa a jogada com nenhum adversário. Qual a marcação correta?",
+          opcoes: [
+            "Impedimento, pois a posição irregular já é suficiente",
+            "Sem impedimento, pois estar em posição irregular não é infração por si só",
+            "Impedimento, mas só se ele estiver na pequena área",
+            "Depende exclusivamente da distância até o goleiro"
+          ],
+          correta: 1,
+          explicacao: "Estar em posição de impedimento não é falta. A infração só existe se o jogador interferir na jogada, no adversário ou obtiver vantagem da posição."
+        },
+        {
+          cenario: "Um lançamento é feito diretamente de um escanteio e o atacante recebe a bola mais adjiante do que o penúltimo adversário. Ele está impedido?",
+          opcoes: [
+            "Sim, a regra vale para qualquer lançamento",
+            "Não, escanteio é uma das exceções à regra do impedimento",
+            "Só se o goleiro estiver fora da área",
+            "Apenas em campeonatos que usam o VAR"
+          ],
+          correta: 1,
+          explicacao: "A regra do impedimento não se aplica em cobranças de lateral, tiro de meta e escanteio."
+        },
+        {
+          cenario: "A bola bate na coxa de um defensor e desvia para o próprio braço, que estava colado ao corpo. O árbitro deve marcar a infração?",
+          opcoes: [
+            "Sim, todo toque de braço é falta",
+            "Não, pois o desvio foi acidental e o braço estava em posição natural",
+            "Sim, mas só dentro da área",
+            "Depende se o time estava vencendo a partida"
+          ],
+          correta: 1,
+          explicacao: "Quando a bola desvia acidentalmente para o braço em posição natural, sem ampliar o corpo, o jogo geralmente segue normalmente."
+        },
+        {
+          cenario: "Segundo o próprio VAR (Video Assistant Referee), qual das situações abaixo NÃO está entre as revisadas pelo sistema?",
+          opcoes: [
+            "Confusão de identidade do jogador punido",
+            "Pênaltis",
+            "Cartão amarelo isolado",
+            "Cartão vermelho direto"
+          ],
+          correta: 2,
+          explicacao: "O VAR revisa quatro situações específicas: gols, pênaltis, cartões vermelhos diretos e confusão de identidade. Cartões amarelos isolados ficam fora desse escopo."
+        },
+        {
+          cenario: "No 'Carrossel Holandês' dos anos 1970, o que tornava esse sistema tático revolucionário para a época?",
+          opcoes: [
+            "A ausência total de zagueiros em campo",
+            "Jogadores sem posição fixa, trocando de função durante a partida",
+            "A proibição de passes para trás",
+            "O uso de apenas nove jogadores em campo"
+          ],
+          correta: 1,
+          explicacao: "O Carrossel Holandês ficou marcado justamente pela rotação de posições: os jogadores circulavam pelo campo sem função fixa, algo raro para a década de 1970."
+        }
+      ];
+
+      var indiceAtual = 0;
+      var acertos = 0;
+      var erros = 0;
+      var respondida = false;
+
+      var corpo = document.getElementById('fut-quiz-corpo');
+      var placarAcertos = document.getElementById('fut-placar-acertos');
+      var placarErros = document.getElementById('fut-placar-erros');
+      var marcas = document.querySelectorAll('.fut-cobranca-marca');
+
+      function renderPergunta() {
+        respondida = false;
+        var p = perguntas[indiceAtual];
+
+        var html = '<p class="fut-pergunta-num">Cobrança ' + (indiceAtual + 1) + ' de ' + perguntas.length + '</p>';
+        html += '<p class="fut-cenario">' + p.cenario + '</p>';
+        html += '<div class="fut-opcoes" role="group" aria-label="Alternativas">';
+        p.opcoes.forEach(function (opcao, i) {
+          html += '<button type="button" class="fut-opcao" data-indice="' + i + '">' + opcao + '</button>';
+        });
+        html += '</div>';
+        html += '<div id="fut-explicacao-area"></div>';
+        html += '<button type="button" class="fut-btn" id="fut-btn-proxima" style="display:none;">' +
+                (indiceAtual === perguntas.length - 1 ? 'Ver resultado final' : 'Próxima cobrança') + '</button>';
+
+        corpo.innerHTML = html;
+
+        var botoesOpcao = corpo.querySelectorAll('.fut-opcao');
+        botoesOpcao.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            if (respondida) return;
+            responder(parseInt(btn.getAttribute('data-indice'), 10));
+          });
+        });
+
+        var btnProxima = document.getElementById('fut-btn-proxima');
+        btnProxima.addEventListener('click', function () {
+          indiceAtual++;
+          if (indiceAtual < perguntas.length) {
+            renderPergunta();
+          } else {
+            renderResultado();
+          }
+        });
+      }
+
+      function responder(indiceEscolhido) {
+        respondida = true;
+        var p = perguntas[indiceAtual];
+        var certo = indiceEscolhido === p.correta;
+
+        var botoesOpcao = corpo.querySelectorAll('.fut-opcao');
+        botoesOpcao.forEach(function (btn, i) {
+          btn.disabled = true;
+          if (i === p.correta) btn.classList.add('fut-correta');
+          if (i === indiceEscolhido && !certo) btn.classList.add('fut-errada');
+        });
+
+        document.getElementById('fut-explicacao-area').innerHTML =
+          '<p class="fut-explicacao">' + p.explicacao + '</p>';
+        document.getElementById('fut-btn-proxima').style.display = 'inline-block';
+
+        if (certo) { acertos++; } else { erros++; }
+        atualizarPlacar(certo);
+      }
+
+      function atualizarPlacar(certo) {
+        placarAcertos.textContent = acertos;
+        placarErros.textContent = erros;
+        var totalRespondidas = acertos + erros;
+        var marca = marcas[totalRespondidas - 1];
+        if (marca) marca.classList.add(certo ? 'fut-gol' : 'fut-perdeu');
+      }
+
+      function renderResultado() {
+        var mensagem;
+        if (acertos === perguntas.length) {
+          mensagem = 'Cinco cobranças, cinco gols. Nem o VAR encontra erro nessa marcação.';
+        } else if (acertos >= 3) {
+          mensagem = 'Boa disputa. Você domina a maior parte das regras discutidas no texto.';
+        } else {
+          mensagem = 'Vale revisar o guia de regras acima antes da próxima cobrança.';
+        }
+
+        corpo.innerHTML =
+          '<div class="fut-resultado">' +
+          '<p class="fut-placar-numero">Resultado final: ' + acertos + ' x ' + erros + '</p>' +
+          '<p>' + mensagem + '</p>' +
+          '<button type="button" class="fut-btn" id="fut-btn-reiniciar">Repetir a disputa</button>' +
+          '</div>';
+
+        document.getElementById('fut-btn-reiniciar').addEventListener('click', reiniciar);
+      }
+
+      function reiniciar() {
+        indiceAtual = 0;
+        acertos = 0;
+        erros = 0;
+        placarAcertos.textContent = '0';
+        placarErros.textContent = '0';
+        marcas.forEach(function (m) { m.classList.remove('fut-gol', 'fut-perdeu'); });
+        renderPergunta();
+      }
+
+      renderPergunta();
+    })();
+    </script>
 </body>
 </html>
