@@ -178,10 +178,16 @@
             </div>
             <p>Mesmo quem acompanha futebol há anos pode se perder em algumas regras do jogo. Abaixo estão explicados de forma simples dois dos conceitos mais debatidos nas arquibancadas:</p>
 
-            <h3>O Impedimento</h3>
+            <div class="fut-secao-titulo fut-secao-titulo--sub">
+                <span class="fut-numero--sub" aria-hidden="true">1</span>
+                <h3>O Impedimento</h3>
+            </div>
             <p>Um jogador estará em posição de impedimento se, no momento em que a bola é lançada por seu companheiro, ele estiver no campo de ataque e mais próximo da linha de fundo adversária do que o penúltimo oponente (incluindo o goleiro). A regra não se aplica em cobranças de lateral, tiro de meta e escanteio.</p>
 
-            <h3>Toque de Mão/Braço</h3>
+            <div class="fut-secao-titulo fut-secao-titulo--sub">
+                <span class="fut-numero--sub" aria-hidden="true">2</span>
+                <h3>Toque de Mão/Braço</h3>
+            </div>
             <p>Nem todo toque de mão na bola é falta. A infração é marcada quando o toque é voluntário ou quando o braço do jogador está em uma posição não natural, ampliando o espaço do seu corpo. Porém, se a bola desviar acidentalmente no braço de um defensor após rebater em seu próprio corpo, o jogo geralmente segue.</p>
 
             <!-- Diagrama interativo do impedimento -->
@@ -253,6 +259,64 @@
                 </div>
             </div>
 
+            <!-- Diagrama interativo do toque de mão/braço -->
+            <div class="fut-secao">
+                <h3>Veja o toque de mão/braço na prática</h3>
+                <p class="fut-lead">Ajuste a posição do braço do defensor e a origem do toque para ver como o árbitro decide entre falta e "bola no jogo".</p>
+
+                <div class="fut-diagrama">
+                    <svg id="mao-svg" viewBox="0 0 760 300" role="img" aria-labelledby="mao-svg-titulo mao-svg-desc">
+                        <title id="mao-svg-titulo">Diagrama de toque de mão/braço</title>
+                        <desc id="mao-svg-desc">Vista lateral de uma jogada mostrando o cobrador, a trajetória da bola e o braço do defensor.</desc>
+
+                        <defs>
+                            <marker id="fut-seta-mov-ponta" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L6,3 L0,6 Z" fill="#d4af37"></path>
+                            </marker>
+                        </defs>
+
+                        <!-- silhueta de referência: largura "natural" do corpo -->
+                        <path id="mao-silhueta" class="fut-silhueta" d="M492,120 C485,140 485,170 493,195"></path>
+
+                        <!-- trajeto da bola: um ou dois segmentos, dependendo do tipo de toque -->
+                        <path id="mao-trajeto-1" class="fut-trajeto" d=""></path>
+                        <path id="mao-trajeto-2" class="fut-trajeto-desvio" d=""></path>
+
+                        <!-- seta indicando movimento voluntário da mão em direção à bola -->
+                        <path id="mao-seta-mov" class="fut-seta-mov" d="" style="display:none;"></path>
+                        <text id="mao-legenda-mov" class="fut-legenda-mov" x="0" y="0" style="display:none;">mão vai à bola</text>
+
+                        <!-- cobrador -->
+                        <g class="fut-jogador fut-passador" transform="translate(140,225)">
+                            <circle r="13"></circle>
+                            <text y="24">COBRADOR</text>
+                        </g>
+
+                        <!-- defensor: cabeça, tronco, pernas, braço e mão -->
+                        <g id="mao-defensor" transform="translate(500,150)">
+                            <circle class="fut-defensor-corpo" cx="0" cy="-45" r="11"></circle>
+                            <ellipse class="fut-defensor-corpo" cx="0" cy="-8" rx="15" ry="30"></ellipse>
+                            <line class="fut-linha" x1="-8" y1="20" x2="-14" y2="60"></line>
+                            <line class="fut-linha" x1="8" y1="20" x2="14" y2="60"></line>
+                            <path id="mao-braco" class="fut-braco" d=""></path>
+                            <g id="mao-mao" class="fut-jogador fut-mao">
+                                <circle r="9"></circle>
+                            </g>
+                            <text y="-64">DEFENSOR</text>
+                        </g>
+                    </svg>
+
+                    <div class="fut-controles">
+                        <button type="button" class="fut-btn" id="mao-btn-braco">Braço: colado ao corpo</button>
+                        <button type="button" class="fut-btn" id="mao-btn-toque">Toque: acidental (desvia no corpo)</button>
+                        <button type="button" class="fut-btn fut-btn-secundario" id="mao-btn-nova">Nova jogada</button>
+                        <span id="mao-status" class="fut-status fut-legal" role="status" aria-live="polite">SEM FALTA</span>
+                    </div>
+
+                    <p id="mao-explicacao" class="fut-explicacao"></p>
+                </div>
+            </div>
+
             <!-- Disputa de pênaltis: quiz -->
             <div class="fut-secao">
                 <h3>Disputa de pênaltis: teste suas regras</h3>
@@ -283,7 +347,7 @@
     </footer>
 
     <script>
-    (function () {
+(function () {
       /* ===== Diagrama do impedimento ===== */
       var svg = document.getElementById('fut-svg-impedimento');
       var atacante = document.getElementById('fut-atacante');
@@ -544,6 +608,118 @@
       }
 
       renderPergunta();
+
+      /* ===== Diagrama do toque de mão/braço ===== */
+      var braco = document.getElementById('mao-braco');
+      var mao = document.getElementById('mao-mao');
+      var trajeto1 = document.getElementById('mao-trajeto-1');
+      var trajeto2 = document.getElementById('mao-trajeto-2');
+      var setaMov = document.getElementById('mao-seta-mov');
+      var legendaMov = document.getElementById('mao-legenda-mov');
+      var btnBraco = document.getElementById('mao-btn-braco');
+      var btnToque = document.getElementById('mao-btn-toque');
+      var btnNova = document.getElementById('mao-btn-nova');
+      var maoStatus = document.getElementById('mao-status');
+      var maoExplicacao = document.getElementById('mao-explicacao');
+
+      // pontos relativos ao grupo #mao-defensor (origem em 500,150 no SVG)
+      var OMBRO = { x: 13, y: -25 };
+      var COTOVELO_NATURAL = { x: 16, y: 8 };
+      var MAO_NATURAL = { x: 10, y: 34 };
+      var COTOVELO_LONGE = { x: 42, y: -22 };
+      var MAO_LONGE = { x: 66, y: -50 };
+      var COTOVELO_INTERCEPTA = { x: -14, y: -18 };
+      var MAO_INTERCEPTA = { x: -46, y: -34 }; // mão avança em direção à bola, bem separada do peito
+
+      var MAO_COBRADOR_ABS = { x: 140, y: 225 };
+      var MAO_PEITO_ABS = { x: 500 - 4, y: 150 + 18 }; // ponto de contato no tronco, visualmente separado da mão
+
+      var estadoMao = { bracoNatural: true, toque: 'acidental' };
+
+      function maoAbsDe(p) {
+        return { x: 500 + p.x, y: 150 + p.y };
+      }
+
+      function maoAtual() {
+        if (estadoMao.toque === 'voluntario') return maoAbsDe(MAO_INTERCEPTA);
+        return maoAbsDe(estadoMao.bracoNatural ? MAO_NATURAL : MAO_LONGE);
+      }
+
+      function cotoveloAtual() {
+        if (estadoMao.toque === 'voluntario') return maoAbsDe(COTOVELO_INTERCEPTA);
+        return maoAbsDe(estadoMao.bracoNatural ? COTOVELO_NATURAL : COTOVELO_LONGE);
+      }
+
+      function maoDesenhar() {
+        var ombro = maoAbsDe(OMBRO);
+        var cotovelo = cotoveloAtual();
+        var maoAbs = maoAtual();
+
+        braco.setAttribute('d', 'M' + ombro.x + ',' + ombro.y +
+          ' Q' + cotovelo.x + ',' + cotovelo.y + ' ' + maoAbs.x + ',' + maoAbs.y);
+        mao.setAttribute('transform', 'translate(' + maoAbs.x + ',' + maoAbs.y + ')');
+
+        if (estadoMao.toque === 'voluntario') {
+          trajeto1.setAttribute('d', 'M' + MAO_COBRADOR_ABS.x + ',' + MAO_COBRADOR_ABS.y + ' L' + maoAbs.x + ',' + maoAbs.y);
+          trajeto2.setAttribute('d', '');
+          setaMov.style.display = '';
+          legendaMov.style.display = '';
+          setaMov.setAttribute('d', 'M' + (maoAbs.x - 26) + ',' + (maoAbs.y + 20) + ' L' + (maoAbs.x - 2) + ',' + (maoAbs.y + 2));
+          legendaMov.setAttribute('x', maoAbs.x - 96);
+          legendaMov.setAttribute('y', maoAbs.y + 34);
+        } else {
+          trajeto1.setAttribute('d', 'M' + MAO_COBRADOR_ABS.x + ',' + MAO_COBRADOR_ABS.y + ' L' + MAO_PEITO_ABS.x + ',' + MAO_PEITO_ABS.y);
+          trajeto2.setAttribute('d', 'M' + MAO_PEITO_ABS.x + ',' + MAO_PEITO_ABS.y + ' L' + maoAbs.x + ',' + maoAbs.y);
+          setaMov.style.display = 'none';
+          legendaMov.style.display = 'none';
+        }
+
+        maoAvaliar();
+      }
+
+      function maoAvaliar() {
+        var falta = (!estadoMao.bracoNatural) || (estadoMao.toque === 'voluntario');
+        var legal = !falta;
+
+        mao.classList.toggle('fut-legal', legal);
+        braco.classList.toggle('fut-legal', legal);
+        maoStatus.classList.toggle('fut-legal', legal);
+        maoStatus.textContent = falta ? 'FALTA' : 'SEM FALTA';
+
+        var motivo;
+        if (!estadoMao.bracoNatural && estadoMao.toque === 'voluntario') {
+          motivo = 'Falta dupla: o braço está afastado do corpo (ampliando o espaço) e, além disso, a mão foi ao encontro da bola.';
+        } else if (!estadoMao.bracoNatural) {
+          motivo = 'Falta: mesmo sem intenção, o braço está em posição não natural, ampliando o espaço ocupado pelo corpo.';
+        } else if (estadoMao.toque === 'voluntario') {
+          motivo = 'Falta: o jogador moveu a mão em direção à bola, caracterizando toque voluntário.';
+        } else {
+          motivo = 'Sem falta: o braço está colado ao corpo (posição natural) e a bola desviou acidentalmente após bater em outra parte do corpo.';
+        }
+        maoExplicacao.textContent = motivo;
+      }
+
+      btnBraco.addEventListener('click', function () {
+        estadoMao.bracoNatural = !estadoMao.bracoNatural;
+        btnBraco.textContent = 'Braço: ' + (estadoMao.bracoNatural ? 'colado ao corpo' : 'afastado do corpo');
+        maoDesenhar();
+      });
+
+      btnToque.addEventListener('click', function () {
+        estadoMao.toque = estadoMao.toque === 'acidental' ? 'voluntario' : 'acidental';
+        btnToque.textContent = 'Toque: ' + (estadoMao.toque === 'acidental' ? 'acidental (desvia no corpo)' : 'voluntário (mão vai à bola)');
+        maoDesenhar();
+      });
+
+      btnNova.addEventListener('click', function () {
+        estadoMao.bracoNatural = Math.random() > 0.5;
+        estadoMao.toque = Math.random() > 0.5 ? 'acidental' : 'voluntario';
+        btnBraco.textContent = 'Braço: ' + (estadoMao.bracoNatural ? 'colado ao corpo' : 'afastado do corpo');
+        btnToque.textContent = 'Toque: ' + (estadoMao.toque === 'acidental' ? 'acidental (desvia no corpo)' : 'voluntário (mão vai à bola)');
+        maoDesenhar();
+      });
+
+      maoDesenhar();
     })();
     </script>
 </body>
